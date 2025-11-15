@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Calendar Importer</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LazzzySyllabus</h1>
+            <p class="subtitle">Upload your course syllabus and automatically add important dates to your Google Calendar</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="upload-section">
+                <h2 class="section-title">Upload Syllabus</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <h3>Drag & Drop your syllabus file here</h3>
+                    <p>Supported formats: PDF, JPG, PNG</p>
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                    <button class="btn" id="browseBtn" style="margin-top: 15px;">
+                        <span>Browse Files</span>
+                    </button>
+                </div>
+                
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="file-icon">📄</div>
+                    <div>
+                        <div id="fileName">syllabus.pdf</div>
+                        <div id="fileSize">2.4 MB</div>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn" id="extractBtn" disabled>
+                        <span>Extract Dates</span>
+                    </button>
+                    <button class="btn btn-secondary" id="connectCalendarBtn">
+                        <span>Connect Google Calendar</span>
+                    </button>
+                </div>
+                
+                <div id="statusMessage" class="status-message" style="display: none;"></div>
+
+                <!-- LOADING SPINNER ADDED HERE -->
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>AI is analyzing your syllabus... This may take 10-20 seconds</p>
+                </div>
+
+            </section>
+            
+            <section class="preview-section">
+                <h2 class="section-title">Calendar Preview</h2>
+                <p>Review the extracted dates before adding to your calendar</p>
+                
+                <div class="calendar-preview" id="calendarPreview">
+                    <!-- Events will be dynamically added here -->
+                    <div class="no-events" id="noEvents">
+                        <p>No events extracted yet. Upload a syllabus to get started.</p>
+                    </div>
+                </div>
+                
+                <div class="actions" style="justify-content: flex-end;">
+                    <button class="btn btn-accent" id="addToCalendarBtn" disabled>
+                        <span>Add to Google Calendar</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>DandyHacks 2025 | Uses Google Gemini AI & Google Calendar API</p>
+        </footer>
+    </div>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>

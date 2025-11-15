@@ -1,0 +1,330 @@
+:root {
+    --primary: #781851;
+    --secondary: #2d0e52;
+    --accent: #ea4335;
+    --light: #f8f9fa;
+    --dark: #202124;
+    --gray: #787251;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #e9d7d7;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 40px 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.upload-section, .preview-section {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--light);
+    padding-bottom: 10px;
+}
+
+.upload-area {
+    border: 2px dashed var(--gray);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--primary);
+    background-color: rgba(205, 148, 177, 0.425);
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: var(--gray);
+    margin-bottom: 15px;
+}
+
+.file-input {
+    display: none;
+}
+
+.btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:hover:not(:disabled) {
+    background-color: #ab3a54;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #ab3a54;
+}
+
+.btn-accent {
+    background-color: var(--accent);
+}
+
+.btn-accent:hover:not(:disabled) {
+    background-color: #ab3a54;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.calendar-preview {
+    border: 1px solid var(--light);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.event-item {
+    padding: 15px;
+    border-left: 4px solid var(--primary);
+    background-color: rgba(66, 133, 244, 0.05);
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.event-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.event-details {
+    display: flex;
+    justify-content: space-between;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.no-events {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray);
+}
+
+.status-message {
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.status-success {
+    background-color: rgba(52, 168, 83, 0.1);
+    color: var(--secondary);
+    border: 1px solid rgba(52, 168, 83, 0.3);
+}
+
+.status-error {
+    background-color: rgba(234, 67, 53, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(234, 67, 53, 0.3);
+}
+
+.status-info {
+    background-color: rgba(66, 133, 244, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(66, 133, 244, 0.3);
+}
+
+.file-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--light);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-icon {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+}
+
+/* ===== LOADING SPINNER STYLES ===== */
+.loading-spinner {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #4285f4;
+    animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+    0% { border-color: #4285f4; }
+    50% { border-color: #34a853; }
+    100% { border-color: #4285f4; }
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4285f4;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    color: #5f6368;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Loading state for buttons */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-loading::before {
+    content: '🔄';
+    margin-right: 8px;
+}
+
+/* Disable interactions during loading */
+body.loading {
+    cursor: wait;
+}
+
+body.loading .btn:not(.btn-loading) {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Pulse animation for loading states */
+.loading-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Optional: Loading state for event items */
+.event-item.loading {
+    opacity: 0.7;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
