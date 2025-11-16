@@ -17,12 +17,15 @@
 5. Add `http://localhost:5001/oauth2callback` as authorized redirect URI
 6. Copy Client ID and Client Secret
 
+**Run Locally, yeah really, I could not get past the goDaddy captha so I could not redeem my domain name**
+1. Open http://localhost:5001 in your browser after setting up the backend like outlined below
+
 ### 2. Setup Backend
 
 ```bash
 # Clone the repository
 git clone <your-repo-url>
-cd lazzzy-syllabus/backend
+cd DandyHacks-2025/backend
 
 # Install dependencies
 pip install -r requirements.txt
@@ -33,3 +36,4 @@ cp .env.example .env
 
 # Run the backend
 python app.py
+
