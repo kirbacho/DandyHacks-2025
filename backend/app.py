@@ -250,6 +250,89 @@ def generate_ai_study_tips(event):
             "Create study notes and summaries"
         ]
 
+def get_existing_calendar_events(service, start_date, end_date):
+    """Get existing calendar events to avoid conflicts"""
+    try:
+        events_result = service.events().list(
+            calendarId='primary',
+            timeMin=start_date.isoformat() + 'Z',
+            timeMax=end_date.isoformat() + 'Z',
+            singleEvents=True,
+            orderBy='startTime'
+        ).execute()
+        
+        events = events_result.get('items', [])
+        return events
+    except Exception as e:
+        print(f"Error fetching existing events: {e}")
+        return []
+
+def find_available_time(service, target_date, duration_hours=2):
+    """Find available time slots to avoid overlaps"""
+    # Define preferred study times (in order of preference)
+    preferred_times = [
+        ('18:00', '20:00'),  # Evening 1
+        ('19:00', '21:00'),  # Evening 2  
+        ('20:00', '22:00'),  # Evening 3
+        ('16:00', '18:00'),  # Late afternoon
+        ('14:00', '16:00'),  # Afternoon
+        ('12:00', '14:00'),  # Lunch time
+        ('09:00', '11:00'),  # Morning
+    ]
+    
+    # Check existing events for that day
+    start_of_day = datetime(target_date.year, target_date.month, target_date.day, 0, 0)
+    end_of_day = start_of_day + timedelta(days=1)
+    
+    existing_events = get_existing_calendar_events(service, start_of_day, end_of_day)
+    
+    # Convert existing events to time ranges
+    busy_slots = []
+    for event in existing_events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        end = event['end'].get('dateTime', event['end'].get('date'))
+        
+        if 'T' in start:  # It's a datetime event
+            start_time = datetime.fromisoformat(start.replace('Z', '+00:00'))
+            end_time = datetime.fromisoformat(end.replace('Z', '+00:00'))
+            busy_slots.append((start_time.time(), end_time.time()))
+    
+    # Try preferred times in order
+    for start_str, end_str in preferred_times:
+        start_time = datetime.strptime(start_str, '%H:%M').time()
+        end_time = datetime.strptime(end_str, '%H:%M').time()
+        
+        # Check if this time conflicts with any existing event
+        conflict = False
+        for busy_start, busy_end in busy_slots:
+            if not (end_time <= busy_start or start_time >= busy_end):
+                conflict = True
+                break
+        
+        if not conflict:
+            return start_str, end_str
+    
+    # If no preferred time works, find any 2-hour gap in the day
+    for hour in range(8, 22):  # From 8 AM to 10 PM
+        test_start = f"{hour:02d}:00"
+        test_end = f"{hour + duration_hours:02d}:00"
+        
+        start_time = datetime.strptime(test_start, '%H:%M').time()
+        end_time = datetime.strptime(test_end, '%H:%M').time()
+        
+        # Check for conflicts
+        conflict = False
+        for busy_start, busy_end in busy_slots:
+            if not (end_time <= busy_start or start_time >= busy_end):
+                conflict = True
+                break
+        
+        if not conflict:
+            return test_start, test_end
+    
+    # Last resort: use default evening time
+    return '19:00', '21:00'
+
 # Debug route
 @app.route('/debug')
 def debug():
@@ -398,7 +481,7 @@ def upload_syllabus():
 
 @app.route('/generate-study-sessions', methods=['POST'])
 def generate_study_sessions():
-    """Generate study sessions with AI-powered tips"""
+    """Generate study sessions with AI-powered tips and smart scheduling"""
     try:
         data = request.json
         exam_event = data.get('exam_event')
@@ -412,8 +495,11 @@ def generate_study_sessions():
             print("⏭️  Skipping study sessions for review session")
             return jsonify({'success': True, 'study_sessions': []})
         
-        # Generate AI-powered study tips - ACTUALLY CALL THE FUNCTION
+        # Generate AI-powered study tips
         study_tips = generate_ai_study_tips(exam_event)
+        
+        # Get calendar service for smart scheduling
+        service = get_calendar_service()
         
         # Create study sessions
         study_sessions = []
@@ -421,6 +507,14 @@ def generate_study_sessions():
         
         for i, days in enumerate(days_before):
             study_date = exam_date - timedelta(days=days)
+            
+            # Find available time slot to avoid conflicts
+            if service:
+                start_time, end_time = find_available_time(service, study_date)
+                print(f"📅 Found available slot: {start_time} - {end_time} on {study_date.strftime('%Y-%m-%d')}")
+            else:
+                # Fallback times if no calendar access
+                start_time, end_time = ('19:00', '21:00') if i == 0 else ('18:00', '20:00')
             
             # Different focus for each session
             if i == 0:
@@ -437,13 +531,13 @@ def generate_study_sessions():
             study_sessions.append({
                 "title": session_title,
                 "date": study_date.strftime('%Y-%m-%d'),
-                "start_time": "19:00",
-                "end_time": "21:00", 
+                "start_time": start_time,
+                "end_time": end_time, 
                 "recurring": False,
                 "recurrence_pattern": "",
                 "description": f"Study session for {exam_event['title']}",
                 "type": "study-session",
-                "study_tips": tips  # SIMPLE ARRAY OF STRINGS from AI
+                "study_tips": tips
             })
         
         return jsonify({'success': True, 'study_sessions': study_sessions})
