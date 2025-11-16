@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Syllabus Calendar Importer</title>
+    <title>LazzzySyllabus - AI Academic Assistant</title>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>LazzzySyllabus</h1>
-            <p class="subtitle">Upload your course syllabus and automatically add important dates to your Google Calendar</p>
+            <div class="title-container">
+                <h1>LazySyllabus</h1>
+            </div>
+            <p class="subtitle">Upload your syllabus and let AI automatically plan your study schedule</p>
         </header>
         
         <div class="main-content">
             <section class="upload-section">
                 <h2 class="section-title">Upload Syllabus</h2>
                 
+                <!-- SINGLE FILE UPLOAD -->
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">📄</div>
-                    <h3>Drag & Drop your syllabus file here</h3>
+                    <h3>Drag & Drop Your Syllabus</h3>
                     <p>Supported formats: PDF, JPG, PNG</p>
                     <input type="file" id="fileInput" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
-                    <button class="btn" id="browseBtn" style="margin-top: 15px;">
+                    <button class="btn" id="browseBtn">
                         <span>Browse Files</span>
                     </button>
                 </div>
@@ -46,22 +49,27 @@
                 
                 <div id="statusMessage" class="status-message" style="display: none;"></div>
 
-                <!-- LOADING SPINNER ADDED HERE -->
+                <!-- LOADING SPINNER -->
                 <div id="loadingSpinner" class="loading-spinner" style="display: none;">
                     <div class="spinner"></div>
-                    <p>AI is analyzing your syllabus... This may take 10-20 seconds</p>
+                    <p>AI is analyzing your syllabus and planning smart study sessions...</p>
                 </div>
-
             </section>
             
             <section class="preview-section">
-                <h2 class="section-title">Calendar Preview</h2>
-                <p>Review the extracted dates before adding to your calendar</p>
+                <h2 class="section-title">Your Semester Plan</h2>
+                <p>AI-generated events including smart study sessions</p>
                 
                 <div class="calendar-preview" id="calendarPreview">
-                    <!-- Events will be dynamically added here -->
                     <div class="no-events" id="noEvents">
                         <p>No events extracted yet. Upload a syllabus to get started.</p>
+                    </div>
+                </div>
+                
+                <div class="smart-feature-indicator">
+                    <div class="feature-badge">
+                        <span>✨</span>
+                        <span>Smart study sessions with AI-generated resources</span>
                     </div>
                 </div>
                 
@@ -74,7 +82,7 @@
         </div>
         
         <footer>
-            <p>DandyHacks 2025 | Uses Google Gemini AI & Google Calendar API</p>
+            <p>DandyHacks 2025 | AI-Powered Academic Planning</p>
         </footer>
     </div>
 
